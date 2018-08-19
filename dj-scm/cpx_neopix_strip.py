@@ -17,7 +17,7 @@ acc_z_history = []
 numpix = 30
 pix_strip = neopixel.NeoPixel(board.D6,30,brightness=0.3,auto_write=False)
 
-gc.mem_free()
+print("free="+str(gc.mem_free()))
 def init_color_array(npix):
     colors = [BLK for i in range(npix)]
     color_idx = 0
@@ -44,7 +44,8 @@ write_colors_to_strip(colors,pix_strip)
 while True:
     #(acc_x,acc_y,acc_z) = cpx.acceleration
     #print((acc_x,acc_y,acc_z))
-    print("Hello")
+    print(gc.mem_free())
+    gc.collect()
     time.sleep(0.5)
     # Shift pix_strip colors into cache array, colors
     i = 0
@@ -54,4 +55,4 @@ while True:
         else:
             colors[i+1]=pixel
         i = i+1
-    write_colors_to_strip(colors, pix_strip)
+    #write_colors_to_strip(colors, pix_strip)
