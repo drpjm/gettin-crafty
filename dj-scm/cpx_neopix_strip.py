@@ -25,20 +25,19 @@ def init_color_array(npix):
         else:
             color_idx = color_idx + 1
         curr_color = rgb_array[color_idx]
-        #pix_strip[i] = curr_color
         colors[i] = curr_color
-        #pix_strip[i+1] = curr_color
         colors[i+1] = curr_color
-    #pix_strip.show()
     return colors
     
 def write_colors_to_strip(colors,pixels):
-    for i in range(len(colors)):
-        pixels[i] = colors[i]
+    j = 0
+    for c in colors:
+        pixels[j] = c
+        j = j+1
     pixels.show()
 
-init_colors = init_color_array(numpix)
-write_colors_to_strip(init_colors,pix_strip)
+colors = init_color_array(numpix)
+write_colors_to_strip(colors,pix_strip)
 
 while True:
     (acc_x,acc_y,acc_z) = cpx.acceleration
