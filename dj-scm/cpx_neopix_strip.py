@@ -30,10 +30,8 @@ def init_color_array(npix):
     return colors
     
 def write_colors_to_strip(colors,pixels):
-    j = 0
-    for c in colors:
-        pixels[j] = c
-        j = j+1
+    for i, c in enumerate(colors):
+        pixels[i] = c
     pixels.show()
 
 colors = init_color_array(numpix)
@@ -43,3 +41,6 @@ while True:
     (acc_x,acc_y,acc_z) = cpx.acceleration
     print((acc_x,acc_y,acc_z))
     time.sleep(0.5)
+    #for i, pixel in enumerate(pix_strip):
+    #    colors[i+1]=pixel
+        
