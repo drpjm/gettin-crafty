@@ -1,6 +1,5 @@
 import time
 import board
-import simpleio
 import neopixel
 from adafruit_circuitplayground.express import cpx
 import gc
@@ -10,14 +9,14 @@ rgb_array = [(50,0,0),(50,20,0),(50,50,0),
             (0,50,0),(0,50,20),(0,50,50),
             (0,0,50),(20,0,50),(50,0,50)]
 
-acc_x_history = []
-acc_y_history = []
-acc_z_history = []
+#acc_x_history = []
+#acc_y_history = []
+#acc_z_history = []
 
 numpix = 30
-pix_strip = neopixel.NeoPixel(board.D6,30,brightness=0.3,auto_write=False)
+pix_strip = neopixel.NeoPixel(board.D6,numpix,brightness=0.3,auto_write=False)
 
-print("free="+str(gc.mem_free()))
+#print("free="+str(gc.mem_free()))
 def init_color_array(npix):
     colors = [BLK for i in range(npix)]
     color_idx = 0
@@ -38,21 +37,25 @@ def write_colors_to_strip(colors,pixels):
         i = i+1
     pixels.show()
 
-colors = init_color_array(numpix)
-write_colors_to_strip(colors,pix_strip)
+init_colors = init_color_array(numpix)
 
+write_colors_to_strip(init_colors,pix_strip)
+del init_colors
+prior_pix = pix_strip[-1]
+idx = 0;
+idxs = range(numpix)
 while True:
     #(acc_x,acc_y,acc_z) = cpx.acceleration
     #print((acc_x,acc_y,acc_z))
-    print(gc.mem_free())
+    #print(gc.mem_free())
     gc.collect()
-    time.sleep(0.5)
-    # Shift pix_strip colors into cache array, colors
-    i = 0
-    for pixel in pix_strip:
-        if i == len(pix_strip)-1:
-            colors[0] = pixel
-        else:
-            colors[i+1]=pixel
-        i = i+1
-    #write_colors_to_strip(colors, pix_strip)
+    time.sleep(0.05)
+    for idx in idxs:
+        curr_pix = pix_strip[idx]
+        pix_strip[idx] = prior_pix
+        prior_pix = curr_pix
+        idx += 1
+        if idx % numpix:
+            idx = 0
+    pix_strip.show()
+    
