@@ -44,18 +44,20 @@ del init_colors
 prior_pix = pix_strip[-1]
 idx = 0;
 idxs = range(numpix)
+is_blinking = False
 while True:
     #(acc_x,acc_y,acc_z) = cpx.acceleration
     #print((acc_x,acc_y,acc_z))
     #print(gc.mem_free())
     gc.collect()
-    time.sleep(0.05)
-    for idx in idxs:
-        curr_pix = pix_strip[idx]
-        pix_strip[idx] = prior_pix
-        prior_pix = curr_pix
-        idx += 1
-        if idx % numpix:
-            idx = 0
-    pix_strip.show()
+    time.sleep(1)
+    if is_blinking:
+        for idx in idxs:
+            curr_pix = pix_strip[idx]
+            pix_strip[idx] = prior_pix
+            prior_pix = curr_pix
+            idx += 1
+            if idx % numpix:
+                idx = 0
+        pix_strip.show()
     
