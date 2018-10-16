@@ -50,30 +50,30 @@ def wheel(pos):
 ######################### MAIN LOOP ##############################
 
 i = 0
-idxs = range(1,numpix-1)
-prior_pix1 = pix_strip1[idxs[0]+1]
-prior_pix2 = pix_strip2[idxs[0]+1]
+idxs = range(1,numpix)
+prior_pix1 = pix_strip1[-1]
+prior_pix2 = pix_strip2[-1]
 while True:
-  # spin internal LED around!
-  wheel_val = wheel(i)
-  dot[0] = wheel_val
-  dot.show()
-  pix_strip1[0] = tuple(wheel_val)
-  pix_strip2[0] = tuple(wheel_val)
+    # spin internal LED around!
+    wheel_val = wheel(i)
+    dot[0] = wheel_val
+    dot.show()
+    pix_strip1[0] = tuple(wheel_val)
+    pix_strip2[0] = tuple(wheel_val)
   
-  for idx in idxs:
-      curr_pix1 = pix_strip1[idx]
-      pix_strip1[idx] = prior_pix1
-      prior_pix1 = curr_pix1
+    for idx in idxs:
+        curr_pix1 = pix_strip1[idx]
+        pix_strip1[idx] = prior_pix1
+        prior_pix1 = curr_pix1
       
-      curr_pix2 = pix_strip2[idx]
-      pix_strip2[idx] = prior_pix2
-      prior_pix2 = curr_pix2
+        curr_pix2 = pix_strip2[idx]
+        pix_strip2[idx] = prior_pix2
+        prior_pix2 = curr_pix2
       
-  pix_strip1.show()
-  pix_strip2.show()
-  time.sleep(0.1)
+    pix_strip1.show()
+    pix_strip2.show()
+    time.sleep(0.1)
 
-  i = (i+1) % 256  # run from 0 to 255
+    i = (i+1) % 256  # run from 0 to 255
   
   
