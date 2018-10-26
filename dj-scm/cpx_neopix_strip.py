@@ -2,13 +2,14 @@ import time
 import board
 import neopixel
 from analogio import AnalogIn
+from digitalio import DigitalInOut, Direction, Pull
 from simpleio import map_range
 import gc
 
 BLK = (0,0,0)
-rainbow = [(50,0,0),(50,20,0),(50,50,0),
-            (0,50,0),(0,50,20),(0,50,50),
-            (0,0,50),(20,0,50),(50,0,50)]
+rainbow = [(60,0,0),(60,15,0),(60,30,0),(60,60,0),
+            (0,60,0),(0,60,15),(0,60,30),(0,60,60),
+            (0,0,60),(15,0,60),(30,0,60),(60,0,60)]
 
 numpix = 30
 
@@ -37,7 +38,9 @@ head_idx = res['final_idx']
 write_colors_to_strip(res['color_arr'],pix_strip_a1)
 write_colors_to_strip(res['color_arr'],pix_strip_a6)
 
-is_blinking = True
+switch = DigitalInOut(board.D7)
+switch.direction = Direction.INPUT
+switch.pull = Pull.UP
 
 light_in = AnalogIn(board.LIGHT)
 while True:
@@ -46,7 +49,7 @@ while True:
 #    light_val = light_in.value
 #    print(light_val)
     time.sleep(0.08)
-    if is_blinking:
+    if switch.value:
         t0 = time.monotonic()
         
         idx = head_idx
@@ -62,4 +65,9 @@ while True:
         if head_idx % 30 == 0:
             head_idx = 0
         #print("Time = {0}".format(t1-t0))
+    else:
+        pix_strip_a1.fill(BLK)
+        pix_strip_a6.fill(BLK)
+        pix_strip_a1.show()
+        pix_strip_a6.show()
     
