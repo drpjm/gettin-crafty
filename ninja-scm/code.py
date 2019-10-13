@@ -4,6 +4,7 @@ import time
 import busio
 import adafruit_lis3dh
 import neopixel
+import adafruit_dotstar
 from math import fabs, sqrt, floor
 
 i2c_iface = busio.I2C(board.SCL, board.SDA)
@@ -12,10 +13,13 @@ lis3dh_iface = adafruit_lis3dh.LIS3DH_I2C(i2c_iface, int1=ax_int)
 lis3dh_iface.range = adafruit_lis3dh.RANGE_2_G
 G_TO_INT8_FACTOR = 255.0/2.0
 
+dstar = adafruit_dotstar.DotStar(board.APA102_SCK, board.APA102_MOSI, 1)
+
 pix1_pin = board.A3
 pix2_pin = board.A4
 pix1 = neopixel.NeoPixel(pix1_pin, 30, brightness=0.3,auto_write=False)
 pix2 = neopixel.NeoPixel(pix2_pin, 30, brightness=0.3,auto_write=False)
+
 
 RED = (255,0,0)
 GREEN = (0,255,0)
@@ -32,6 +36,8 @@ def compute_brightness(x,y,max_bright):
     else:
         return val
 
+dstar[0] = (100,100,200)
+dstar.brightness = 0.2
 while True:
     x, y, z = [value / adafruit_lis3dh.STANDARD_GRAVITY for value in lis3dh_iface.acceleration]
     #print((x,y,z))
